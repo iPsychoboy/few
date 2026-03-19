@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>اعايدك وانت عيدي</title>
+    <style>
+        @font-face { font-family: 'f2'; src: url('font2.ttf'); }
+        @font-face { font-family: 'f3'; src: url('font3.otf'); }
+
+        :root { --burgundy: #3d0007; --cream: #f5f1e6; }
+
+        body, html { 
+            margin: 0; padding: 0; width: 100%; height: 100%; 
+            background-color: var(--burgundy); overflow: hidden; 
+        }
+
+        /* تنسيق نوافذ السؤال */
+        .custom-alert {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 260px; background: rgba(245, 241, 230, 0.98); 
+            border-radius: 12px; text-align: center; z-index: 9999;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: none;
+            padding-top: 20px; overflow: hidden; font-family: 'f2';
+        }
+        .alert-title { color: var(--burgundy); font-weight: bold; margin-bottom: 15px; font-size: 1.1rem; }
+        .alert-btns { display: flex; border-top: 1px solid #ccc; }
+        .alert-btn { 
+            flex: 1; padding: 12px; cursor: pointer; 
+            color: #007AFF; font-weight: bold; border-right: 1px solid #ccc;
+        }
+        .alert-btn:last-child { border-right: none; }
+
+        .lace-area { position: absolute; right: -5px; top: 0px; width: 94%; height: 370px; background: url('lace_bg.png') no-repeat right top; background-size: contain; z-index: 1; }
+        .lady-gif { position: absolute; right: 0px; top: 15px; width: 315px; height: auto; z-index: 2; }
+        .gif-text { position: absolute; right: 15px; top: 200px; font-family: 'f2'; color: var(--burgundy); font-weight: bold; font-size: 1.2rem; z-index: 3; }
+        .side-lady { position: absolute; right: 0px; bottom: 170px; width: 220px; height: auto; z-index: 2; }
+        .env-box { position: absolute; left: 15px; top: 35vh; text-align: center; z-index: 10; cursor: pointer; }
+        .envelope-img { width: 130px; }
+
+        .poetry-area { 
+            position: absolute; left: 0px; bottom: 6vh; 
+            z-index: 10; text-align: center; width: 200px; 
+        }
+        .poetry-text { font-family: 'f3'; color: var(--cream); font-size: 1.05rem; line-height: 2.1; margin-bottom: 0px; }
+        .lily-btn { width: 50px; height: auto; cursor: pointer; }
+
+        .stamp-img { position: absolute; top: 285px; right: 17px; width: 60px; height: auto; z-index: 10; }
+
+        .letter-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: none; background: rgba(0,0,0,0.9); z-index: 2000; justify-content: center; align-items: center; }
+        .postcard { width: 95%; height: 80vh; background: url('postcard_bg.png') no-repeat center; background-size: contain; position: relative; }
+        .letter-back { position: absolute; top: 50px; right: 20px; color: var(--burgundy); font-family: 'f2'; font-weight: bold; cursor: pointer; z-index: 100; }
+        .blur { filter: blur(10px); transition: 0.3s; }
+        .letter-title { position: absolute; top: 50%; right: 20%; font-family: 'f3'; font-size: 1.1rem; color: var(--burgundy); font-weight: bold; }
+        .letter-body { position: absolute; top: 58%; left: 12%; right: 12%; text-align: center; font-family: 'f3'; font-size: 0.85rem; line-height: 1.3; color: var(--burgundy); max-height: 55%; overflow-y: auto; }
+    </style>
+</head>
+<body>
+
+    <div id="alert1" class="custom-alert" style="display: block;">
+        <div class="alert-title">تحبني ؟</div>
+        <div class="alert-btns">
+            <div class="alert-btn" onclick="handleFirstAlert()">اي</div>
+            <div class="alert-btn" onclick="handleFirstAlert()">اي</div>
+        </div>
+    </div>
+
+    <div id="alert2" class="custom-alert">
+        <div class="alert-title">عادي تبوسني ؟</div>
+        <div class="alert-btns">
+            <div class="alert-btn" onclick="goToInsta()">اموح</div>
+            <div class="alert-btn" onclick="goToInsta()">محروم</div>
+        </div>
+    </div>
+
+    <div id="mainUI" class="blur"> 
+        <div class="lace-area"></div>
+        <img src="lady_animated.gif" class="lady-gif">
+        <div class="gif-text">قلبٍ يفز من الفرح لين لاقاك</div>
+        <img src="lady_roses.png" class="side-lady">
+
+        <div class="env-box" onclick="showLetter()">
+            <img src="envelope_icon.png" class="envelope-img">
+            <div style="color:var(--cream); font-family:'f2'; font-size:0.9rem; margin-top:5px;">كل عام وأنتِ بخير</div>
+        </div>
+
+        <div class="poetry-area">
+            <div class="poetry-text">
+                ما مرّ ذِكرُكِ إلا وابتسمتُ لهُ<br>
+                كأنكِ العيد والباقون أيّامُ<br>
+                أو حَامَ طيفُكِ إلا طِرتُ أتبعُهُ<br> 
+                أنتِ الحقيقةُ والجلّاسُ أوهامُ<br>
+            </div>
+            <img src="white_lily.png" class="lily-btn" onclick="handleLily()">
+            <span style="color:var(--cream); font-family:'f2'; display:block; font-size:0.8rem; margin-top:5px;">اضغطي فلاتر شاهي بعد الظرف</span>
+        </div>
+    </div>
+
+    <div class="letter-overlay" id="letterUI">
+        <div class="postcard">
+            <img src="stamp.png" class="stamp-img">
+            <div class="letter-back" onclick="hideLetter()">عودة</div>
+            <div class="letter-title">الى مارينتي</div>
+            <div class="letter-body">
+                السلام عليكم ورحمة الله وبركاته<br><br>
+اليوم اول ايام العيد و ثاني عيد لنا مع بعض ، كنتي بالنسبه لي حياه وزدتي حبي بالحياه بسبب وجودك وماكنت اعرف معنى الحياه بدونك، اسف اني زعلتك كثير وعصبتك وصارت مواقف سيئة بالبدايات وبحاول اعوضك عن كلشي صار واكون لك الشخص المثالي مثل ماصرتي لي انسانه مثاليه وبيرفكت، انا احبك وببقى أحبك ل اخر يوم بحياتي， 
+أحبك<br><br>
+                <strong>من بدر</strong>
+            </div>
+        </div>
+    </div>
+
+    <audio id="bgMusic" src="background.mp3" loop></audio>
+    <audio id="letterMusic" src="celebration_music.mp3" loop></audio>
+
+    <script>
+        let bgStarted = false;
+
+        function handleFirstAlert() {
+            document.getElementById('alert1').style.display = 'none';
+            document.getElementById('mainUI').classList.remove('blur');
+            const bg = document.getElementById('bgMusic');
+            bg.play().catch(e => console.log("تفاعل مطلوب"));
+            bgStarted = true;
+        }
+
+        function handleLily() {
+            document.getElementById('mainUI').classList.add('blur');
+            document.getElementById('alert2').style.display = 'block';
+        }
+
+        function goToInsta() {
+            // محاولة فتح التطبيق مباشرة باستخدام الرابط العميق
+            const username = "iandmylovers";
+            const appUrl = "instagram://user?username=" + username;
+            const webUrl = "https://ig.me/m/" + username;
+
+            window.location.href = appUrl;
+
+            // إذا لم يفتح التطبيق خلال 500ms، يتم فتح رابط الويب كخيار احتياطي
+            setTimeout(function() {
+                window.location.href = webUrl;
+            }, 500);
+        }
+
+        function showLetter() { 
+            const bg = document.getElementById('bgMusic');
+            const letterM = document.getElementById('letterMusic');
+            document.getElementById('letterUI').style.display = 'flex'; 
+            bg.pause();
+            letterM.currentTime = 0;
+            letterM.play();
+        }
+
+        function hideLetter() { 
+            const bg = document.getElementById('bgMusic');
+            const letterM = document.getElementById('letterMusic');
+            document.getElementById('letterUI').style.display = 'none'; 
+            letterM.pause();
+            bg.play();
+        }
+    </script>
+</body>
+</html>
